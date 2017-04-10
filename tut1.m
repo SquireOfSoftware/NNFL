@@ -3,6 +3,9 @@ clear;
 
 question1 = q1();
 
+question21 = q21();
+question22 = q22(question21);
+
 function output = q1()
     weight = [0, 1, 0]';
     input = [2, 1, -1; 0, -1, -1]';
@@ -43,6 +46,21 @@ function output = q1()
     end
 end
 
-function output = q2() 
+function output = q21() 
+    x10 = [0.1, 0.5, 1, 0.3, 0.1];
+    y6 = [0.3, 1, 0.9, 0.2];
+    addpath('Assignment 1');
+    output = fuzzify(x10', y6);
+end
+
+function output = q22(r)
+    x9 = [0.5, 1, 0.9, 0.4, 0];
+    output = maxmincomposition(x9,r);
     
+    function output = maxmincomposition(a, b)
+        output = max(min(a,[],2),... % read the rows of a
+            min(b,[],1)); % read the columns of b
+    end
+    % https://www.calvin.edu/~pribeiro/othrlnks/Fuzzy/tutorial1.htm
+    % fuzzy tutorial
 end
