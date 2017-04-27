@@ -1,5 +1,3 @@
-% Dichotomiser - Neural Networks
-% 1.1 plot the error curve for 10 cycles
 clc;
 clear;
 
@@ -34,25 +32,28 @@ inputCounter = 1;
 [dRows, dCols] = size(x1');
 output = zeros(dRows, cycles);
 
-cycleErrors = zeros(1, cycles);
+cycleErrors = zeros(1, (cycles - mod(cycles, 6))/6 * 2);
+cycleErrorIndex = 1;
 
 for index = 1:cycles
-    cycleErrors(:, index) = d(:, inputCounter) - sign(w' * y(:, inputCounter));
-    w = variablecorrection(w, lambda, y(:, inputCounter), d(:, inputCounter));
+    output(:, index) = w;
+    %cycleErrors(:, index) = d(:, inputCounter) - sign(w' * y(:, inputCounter));
+    [w, cycleError] = variablecorrection(w, lambda, y(:, inputCounter), d(:, inputCounter));
+    cycleErrors(:, cycleErrorIndex) = cycleErrors(:, cycleErrorIndex) + (cycleError)^2;
     inputCounter = inputCounter + 1;
     if inputCounter > size(d)
         inputCounter = 1;
+        cycleErrorIndex = cycleErrorIndex + 1;
     end
-    output(:, index) = w;
 end
 
 disp(output);
 disp(cycleErrors);
 
 % weight correction formula given
-function output = variablecorrection(w, lambda, y, d)
+function [output, error] = variablecorrection(w, lambda, y, d)
+    error = (d - sign(w' * y));
     output = w + 0.5 * (lambda * abs(w' * y) / (y' * y))...
-        * (d - sign(w' * y)) * y;
+        * error * y;
 end
 
-% 1.2 get error curve, how do w7 and w301 classify the entire training set?
