@@ -32,16 +32,18 @@ inputCounter = 1;
 [dRows, dCols] = size(x1');
 output = zeros(dRows, cycles);
 
-cycleErrors = zeros(1, (cycles - mod(cycles, 6))/6 * 2);
+cycleErrors = zeros(1, (cycles - mod(cycles, 6))/6 + 1);
 cycleErrorIndex = 1;
+
+patternErrors = zeros(cycles, 3);
 
 for index = 1:cycles
     output(:, index) = w;
-    %cycleErrors(:, index) = d(:, inputCounter) - sign(w' * y(:, inputCounter));
     [w, cycleError] = variablecorrection(w, lambda, y(:, inputCounter), d(:, inputCounter));
-    cycleErrors(:, cycleErrorIndex) = cycleErrors(:, cycleErrorIndex) + (cycleError)^2;
+    cycleErrors(:, cycleErrorIndex) = cycleErrors(:, cycleErrorIndex) + 0.5 * (cycleError)^2;
+    patternErrors(index, :) = [index, inputCounter, cycleError];
     inputCounter = inputCounter + 1;
-    if inputCounter > size(d)
+    if inputCounter > 6
         inputCounter = 1;
         cycleErrorIndex = cycleErrorIndex + 1;
     end
@@ -53,7 +55,6 @@ disp(cycleErrors);
 % weight correction formula given
 function [output, error] = variablecorrection(w, lambda, y, d)
     error = (d - sign(w' * y));
-    output = w + 0.5 * (lambda * abs(w' * y) / (y' * y))...
-        * error * y;
+    output = w + 0.5 * (lambda * abs(w' * y) / (y' * y)) * error * y;
 end
 
