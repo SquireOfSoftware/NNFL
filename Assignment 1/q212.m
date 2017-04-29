@@ -18,5 +18,8 @@ function output = maxMinComposition(a, b)
 end
 
 function output = sumProductComposition(a, b)
+    % since a is just a 7 by 1 matrix
+    % the sum has already been calculated
+    % in a sense since each column is just a single value
     output = a * sum(b);
 end
