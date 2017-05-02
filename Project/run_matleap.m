@@ -29,6 +29,7 @@ function x= run_matleap
         % get a frame
         f=matleap_frame;
         % only count it if it has a different id
+        disp(frame_id);
         if f.id~=frame_id
             frame_id=f.id;
             i=i+1;
@@ -39,6 +40,11 @@ function x= run_matleap
                 end
             else
                 bFoundData=1;
+                
+                % extract the pointable ids, use this to mark everything
+                % against each other, will need to use maps
+                % see matlab maps
+                
                 A=extractLeapData(f);
                 OutStore=[OutStore A];
                 %print(f);
@@ -72,18 +78,14 @@ OutData = zeros(45,1);
         k=((i-1)*9)+1;
         
         OutData(k:k+2) = f.pointables(i).position;
-        OutData(k+3:k+5) = f.pointables(i).velocity;
+        OutData(k+3:k+5) = [f.pointables(i).id, 0, 0];%f.pointables(i).velocity;
         OutData(k+6:k+8) = f.pointables(i).direction;
 
         %fprintf(' %f',f.pointables(i).position);
         %fprintf(' %f',f.pointables(i).velocity);
         %fprintf(' %f',f.pointables(i).direction);
-        %disp([i, length(f.pointables), k]);
+        disp([i, f.pointables(i).id, k]);
     end
-
-
-
-
 end
 
 function print(f)

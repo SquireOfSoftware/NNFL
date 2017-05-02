@@ -6,6 +6,8 @@ question1 = q1();
 question21 = q21();
 question22 = q22(question21);
 
+question3 = q3();
+
 function output = q1()
     weight = [0, 1, 0]';
     input = [2, 1, -1; 0, -1, -1]';
@@ -63,4 +65,32 @@ function output = q22(r)
     end
     % https://www.calvin.edu/~pribeiro/othrlnks/Fuzzy/tutorial1.htm
     % fuzzy tutorial
+end
+
+function output = q3() 
+    inputs = [1, -0.5, 3, -2; 1, 1, 1, 1];
+    outputs = [1, -1, 1, -1];
+    lambda = 2;
+    initialWeight = [-2.5; 1.75];
+    w = initialWeight;
+    
+    inputIndex = 1;
+    
+    for index = 1:10
+        disp(w);
+        w = runOneLoop(lambda, w, inputs(:, inputIndex), outputs(:, inputIndex));
+        inputIndex = inputIndex + 1;
+        if inputIndex > 4
+            inputIndex = 1;
+        end
+    end
+    
+    output = w;
+    
+    function output = runOneLoop(lambda, weight, augmentedInput, expectedValue)
+        output = weight + 0.5 * lambda * abs(weight' * augmentedInput) / ...
+            (augmentedInput' * augmentedInput) * ...
+            (expectedValue - sign(weight' * augmentedInput)) *...
+            augmentedInput;
+    end
 end
