@@ -24,12 +24,12 @@ function x= run_matleap
     bFinishLoop = 1; %Flag when to finish loop
     i =0;
     OutStore=zeros(45,1);
-    disp('Scanning...');
+    disp('Scanning now...');
     while(bFinishLoop && toc(startMatleap) < 1)
         % get a frame
         f=matleap_frame;
         % only count it if it has a different id
-        disp(frame_id);
+        %disp(frame_id);
         if f.id~=frame_id
             frame_id=f.id;
             i=i+1;
@@ -46,20 +46,14 @@ function x= run_matleap
                 % see matlab maps
                 
                 A=extractLeapData(f);
-                OutStore=[OutStore A];
-                %print(f);
+                OutStore=[OutStore, A];
             end     
             frames=frames+1;
             disp(toc(startMatleap));
         end
         sleep(0.05);
     end
-
-    % display performance
-    %fprintf('%d frames\n',frames);
-    %fprintf('%f seconds\n',s);
-    %fprintf('%f fps\n',frames/s);
-  x =OutStore(:,2:end);
+    x =OutStore(:,2:end);
 end
 
 % sleep for t seconds
@@ -72,39 +66,52 @@ end
 % print the contents of a leap frame
 function OutData = extractLeapData(f)
 
-OutData = zeros(45,1);
+    OutData = zeros(45,1);
+%     fingerIdOrder = zeros(1, 5);
+%     
+%     disp(fingerMaps);
+%     
+%     if isempty(fingerMaps)
+%         fingerCounter = 1;
+%         fingersProcessed = 0;
+%         fingerMappings = containers.Map();
+%     else
+%         fingerCounter = 6;
+%         fingersProcessed = 1;
+%         fingerMappings = fingerMap;
+%     end
 
-    for i=1:(length(f.pointables))
+    hand = nestedSortStruct(f.pointables, 'id');
+    for i=1:(length(hand))
+
         k=((i-1)*9)+1;
+
+        OutData(k:k+2) = hand(i).position;
+        OutData(k+3:k+5) = [hand(i).id, 0, 0];
+        OutData(k+6:k+8) = hand(i).direction;
+    end
         
-        OutData(k:k+2) = f.pointables(i).position;
-        OutData(k+3:k+5) = [f.pointables(i).id, 0, 0];%f.pointables(i).velocity;
-        OutData(k+6:k+8) = f.pointables(i).direction;
-
-        %fprintf(' %f',f.pointables(i).position);
-        %fprintf(' %f',f.pointables(i).velocity);
-        %fprintf(' %f',f.pointables(i).direction);
-        disp([i, f.pointables(i).id, k]);
-    end
+%         if fingerCounter < 6
+%             fingerIdOrder(:, fingerCounter) = f.pointables(i).id;
+%             fingerCounter = fingerCounter + 1;
+%         elseif fingersProcessed == 0
+%             fingerCounts = [1:5];
+%             fingerMappings = containers.Map(fingerIdOrder, fingerCounts);
+%             %disp(fingerMappings);
+%             fingersProcessed = 1;
+%         end
+%         
+%         if fingersProcessed == 0
+%             disp("first finger");
+%             OutData(k:k+2) = f.pointables(i).position;
+%             OutData(k+3:k+5) = [f.pointables(i).id, 0, 0];
+%             OutData(k+6:k+8) = f.pointables(i).direction;
+%         else
+%             disp(["fingermapping", fingerMappings(f.pointables(i).id)]);
+%             
+%             k = ((fingerMappings(f.pointables(i).id)-1)*9)+1;
+%             OutData(k:k+2) = f.pointables(i).position;
+%             OutData(k+3:k+5) = [f.pointables(i).id, 0, 0];
+%             OutData(k+6:k+8) = f.pointables(i).direction;
+%         end
 end
-
-function print(f)
-    fprintf('frame id %d\n',f.id);
-    fprintf('frame timestamp %d\n',f.timestamp);
-    fprintf('frame pointables %d\n',length(f.pointables));
-    for i=1:length(f.pointables)
-        fprintf('pointable %d\n',i);
-        fprintf('\tid ');
-        fprintf('%d',f.pointables(i).id);
-        fprintf('\n');
-        fprintf('\tposition ');
-        fprintf(' %f',f.pointables(i).position);
-        fprintf('\n');
-        fprintf('\tvelocity ');
-        fprintf(' %f',f.pointables(i).velocity);
-        fprintf('\n');
-        fprintf('\tdirection '); 
-        fprintf(' %f',f.pointables(i).direction);
-        fprintf('\n');
-    end
-  end

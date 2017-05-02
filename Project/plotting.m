@@ -17,7 +17,9 @@ for index = 1:dCols
         fingerPosition = ((pointableIndex-1)*9)+1;
         % disp([v(fingerPosition, index), v(fingerPosition + 1, index), v(fingerPosition + 2, index)]);
        
-        plot3(v(fingerPosition, index), v(fingerPosition + 2, index), v(fingerPosition + 1, index), '.', 'MarkerSize', 50);
+        plot3(v(fingerPosition, index), ...
+            v(fingerPosition + 2, index), ...
+            v(fingerPosition + 1, index), '.', 'MarkerSize', 50);
         
         grid on;
         hold on;
