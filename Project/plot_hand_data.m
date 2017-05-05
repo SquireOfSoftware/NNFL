@@ -15,7 +15,7 @@ function plotData(handData)
 
     for index = 1:dCols
         for pointableIndex = 1:5
-            fingerPosition = 1 + 3 * (pointableIndex - 1);%((pointableIndex-1)*9)+1;
+            fingerPosition = 1 + 3 * (pointableIndex - 1);
 
             plot3(handData(fingerPosition, index), ...
                 handData(fingerPosition + 2, index), ...
