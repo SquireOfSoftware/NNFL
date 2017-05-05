@@ -13,7 +13,7 @@ function [rawOutput, targettedOutput] = grab_raw_data(timePeriod, samplingTime)
     fprintf('matleap version %d.%d\n',version(1),version(2));
     fprintf("Recording...");
     
-    key = waitforbuttonpress;
+    %key = waitforbuttonpress;
     sleep(1);
     disp("...done!");
     startMatleap = tic;

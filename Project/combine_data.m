@@ -3,8 +3,8 @@
 clc;
 clear;
 
-%load('raw_data.mat');
-load('capturedData/hand_down.mat');
+load('raw_data.mat');
+%load('capturedData/hand_down.mat');
 
 disp("Loading up the data");
 
