@@ -12,6 +12,8 @@ function [rawOutput, targettedOutput] = grab_raw_data(timePeriod, samplingTime)
     [version]=matleap_version;
     fprintf('matleap version %d.%d\n',version(1),version(2));
     fprintf("Recording...");
+    
+    key = waitforbuttonpress;
     sleep(1);
     disp("...done!");
     startMatleap = tic;
@@ -20,6 +22,7 @@ function [rawOutput, targettedOutput] = grab_raw_data(timePeriod, samplingTime)
     targettedOutput = zeros(15, timePeriod/samplingTime);
     
     outputIndex = 1;
+    
     while(toc(startMatleap) < timePeriod)
         f=matleap_frame;
         %rawOutput = [rawOutput; f];
