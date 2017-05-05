@@ -39,17 +39,21 @@ end
 
 function handData = extractHandData(frame)
     handData = zeros(15, 1);
-    hand = nestedSortStruct(frame.pointables, 'id');
-    for i=1:(length(hand))
-        % 1, 2, 3 = 1 + 3 (i - 1) = 1
-        % 4, 5, 6 = 1 + 3 (i - 1) = 4
-        % 7, 8, 9 = 1 + 3 * 2 = 7
+    if isempty(frame.pointables)
+        disp("Empty frame recording");
+    else
+        hand = nestedSortStruct(frame.pointables, 'id');
+        for i=1:(length(hand))
+            % 1, 2, 3 = 1 + 3 (i - 1) = 1
+            % 4, 5, 6 = 1 + 3 (i - 1) = 4
+            % 7, 8, 9 = 1 + 3 * 2 = 7
 
-        %k=((i-1)*9)+1;
-        k = 1 + 3 * (i - 1);
+            %k=((i-1)*9)+1;
+            k = 1 + 3 * (i - 1);
 
-        handData(k:k+2) = hand(i).position;
-        %OutData(k+3:k+5) = hand(i).velocity;
-        %OutData(k+6:k+8) = hand(i).direction;
+            handData(k:k+2) = hand(i).position;
+            %OutData(k+3:k+5) = hand(i).velocity;
+            %OutData(k+6:k+8) = hand(i).direction;
+        end
     end
 end
