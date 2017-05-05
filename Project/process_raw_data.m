@@ -3,9 +3,9 @@ test = clean_up_raw_data();
 
 function output = clean_up_raw_data()
     load('raw_data.mat');
-    [~, dCols] = size(oneSecondRecording);
+    [~, dCols] = size(rawRecording);
     for index = 1:dCols
-        fingersOnHand = oneSecondRecording(index);
+        fingersOnHand = rawRecording(index);
         if isempty(fingersOnHand.pointables)
             disp("Empty HAND");
         else

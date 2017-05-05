@@ -72,7 +72,7 @@ function OutData = extractLeapData(f)
         k=((i-1)*9)+1;
 
         OutData(k:k+2) = hand(i).position;
-        OutData(k+3:k+5) = [hand(i).id, 0, 0];
+        OutData(k+3:k+5) = hand(i).velocity;
         OutData(k+6:k+8) = hand(i).direction;
     end
 end
