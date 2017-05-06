@@ -7,7 +7,8 @@ clear;
 addpath ('/Users/JarvisWalker/Documents/Git/matleap');
 addpath ('/Users/JarvisWalker/Documents/Git/NNFL/Project/nestedSortStruct');
 
-[rawRecording, processedRecording] = grab_raw_data(0.5, 20);
+% currently set to 100 milliseconds
+[rawRecording, processedRecording] = grab_raw_data(0.2, 20);
 
 save('raw_data.mat', 'rawRecording', 'processedRecording');
 
