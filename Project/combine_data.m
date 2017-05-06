@@ -60,8 +60,10 @@ function output = cleanUp(recording)
     %output = ones(dRows * dCols, 1);
     outputIndex = 1;
     for rowIndex = 1:dRows
-        %disp([outputIndex, outputIndex + dCols - 1, dRows]);
+        % I have this backwards, but I have the processed data already
         output(outputIndex: outputIndex + dCols - 1) = recording(rowIndex, :);
+        % should be
+        % output(outputIndex: outputIndex + dCols - 1) = recording(:, rowIndex);
         outputIndex = outputIndex + dCols;
     end
 end
