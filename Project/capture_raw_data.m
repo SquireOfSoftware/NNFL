@@ -1,27 +1,39 @@
+% questions
+% how fast should a gesture be?
+
 clc;
 clear;
 
 addpath ('/Users/JarvisWalker/Documents/Git/matleap');
 addpath ('/Users/JarvisWalker/Documents/Git/NNFL/Project/nestedSortStruct');
 
-[rawRecording, processedRecording] = grab_raw_data(1, 0.05);
+[rawRecording, processedRecording] = grab_raw_data(0.5, 20);
 
 save('raw_data.mat', 'rawRecording', 'processedRecording');
 
-function [rawOutput, targettedOutput] = grab_raw_data(timePeriod, samplingTime)
+function [rawOutput, targettedOutput] = grab_raw_data(timePeriod, samples)
     [version]=matleap_version;
     fprintf('matleap version %d.%d\n',version(1),version(2));
     fprintf("Recording...");
     
-    %key = waitforbuttonpress;
+    % figure out how to record on first entry
+    
     sleep(1);
     disp("...done!");
-    startMatleap = tic;
-    %rawOutput = [];
-    rawOutput = repmat(struct('id',0,'timestamp',0,'pointables',{},'hands',{}),20);
-    targettedOutput = zeros(15, timePeriod/samplingTime);
+    
+    rawOutput = repmat(struct('id',0,'timestamp',0,'pointables',{},'hands',{}),samples);
+    targettedOutput = zeros(15, samples);
     
     outputIndex = 1;
+    
+    f = matleap_frame;
+    
+    while isempty(f.pointables)
+        f = matleap_frame;
+        disp("no data");
+    end
+    
+    startMatleap = tic;
     
     while(toc(startMatleap) < timePeriod)
         f=matleap_frame;
@@ -30,7 +42,7 @@ function [rawOutput, targettedOutput] = grab_raw_data(timePeriod, samplingTime)
         targettedOutput(:, outputIndex) = extractHandData(f);
         
         outputIndex = outputIndex + 1;
-        sleep(samplingTime);
+        sleep(timePeriod/samples);
     end
 end
 
