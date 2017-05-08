@@ -1,7 +1,7 @@
 % code to plot the processed data
 cla;
 
-load('raw_data.mat');
+%load('raw_data.mat');
 %load('capturedData/hand_down.mat');
 
 plotData(processedRecording);
@@ -12,7 +12,8 @@ function plotData(handData)
     plotColours = [1 1 0; 0 0 1; 0 1 1; 1 0 0; 0 0 0];
 
     set(gca, 'ColorOrder', plotColours, 'NextPlot', 'replacechildren');
-    axis([-300 300 -300 300]);
+    axis([-200 200 -200 200 0 600]);
+    view(3);
 
     for index = 1:dCols
         for pointableIndex = 1:5
