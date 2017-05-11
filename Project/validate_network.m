@@ -2,7 +2,8 @@ clc;
 clear;
 
 load('current_weight.mat', 'currentWeight');
-load('capturedData/[jack]combined_hand_down_data.mat', 'processedPatternCollection', 'rawPatternCollection');
+%load('capturedData/[jack]combined_hand_down_data.mat', 'processedPatternCollection', 'rawPatternCollection');
+load('capturedData/[jack]combined_swipe_right_data.mat', 'processedPatternCollection', 'rawPatternCollection');
 
 [noOfInputs, pMax] = size(processedPatternCollection);
 bias = ones(noOfInputs, 1);

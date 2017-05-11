@@ -1,4 +1,4 @@
-function [weightEvolution, recordedErrors] = run_neural_network(inputs, expectedOutputs, weight, loops)
+function [resultingWeight, weightEvolution, recordedErrors] = run_neural_network(inputs, expectedOutputs, weight, loops)
     lambda = 0.25;
     weightEvolution = zeros(301, loops);
     recordedErrors = zeros(1, loops);
@@ -14,6 +14,7 @@ function [weightEvolution, recordedErrors] = run_neural_network(inputs, expected
         %recordedErrors(3, index) = (patternErrors ^ 2) / 2;
     end
     plot(recordedErrors(2, :));
+    resultingWeight = weight;
 end
 
 function [outputWeight, loopError] = runOneLoop(inputWeight, lambda, input, expectedOutput)
