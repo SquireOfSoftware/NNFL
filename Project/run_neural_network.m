@@ -1,36 +1,3 @@
-% neural network code
-
-clc;
-clear;
-
-load('capturedData/combined_swipe_down_data.mat', 'processedPatternCollection', 'rawPatternCollection');
-
-[noOfInputs, pMax] = size(processedPatternCollection);
-bias = ones(noOfInputs, 1);
-processedPatternCollection = [processedPatternCollection; bias'];
-
-expectedOutputs = repmat(1, 1, noOfInputs);
-% swipe down is 1
-
-if exist('current_weight.mat', 'file')
-    load('current_weight.mat', 'currentWeight');
-    oldCurrentWeight = currentWeight;
-else
-    % interestingly all ones do nothing
-    %weight1 = zeros(noOfInputs + 1, 1);
-    currentWeight = processedPatternCollection(1, :)';
-    currentWeight = [currentWeight; 1];
-end
-
-[evolutionOfWeights, evolutionOfErrors] = run_neural_network(processedPatternCollection, expectedOutputs, currentWeight, pMax);
-
-plot(evolutionOfErrors(2, :));
-%plot(evolutionOfErrors);
-
-disp(abs(currentWeight - oldCurrentWeight));
-
-save('current_weight.mat', 'currentWeight');
-
 function [weightEvolution, recordedErrors] = run_neural_network(inputs, expectedOutputs, weight, loops)
     lambda = 0.25;
     weightEvolution = zeros(301, loops);
@@ -46,24 +13,13 @@ function [weightEvolution, recordedErrors] = run_neural_network(inputs, expected
         
         %recordedErrors(3, index) = (patternErrors ^ 2) / 2;
     end
-    
+    plot(recordedErrors(2, :));
 end
 
 function [outputWeight, loopError] = runOneLoop(inputWeight, lambda, input, expectedOutput)
-    %v = inputWeight' * input;
-    %disp(["v", v]);
-    % run this through a bipolar function
-    %actualOutput = (2 / (1 + exp(-v))) - 1;
-    %disp(["actualOutput", actualOutput]);
-    %loopError = expectedOuput - actualOutput;
-    
     loopError = measureAccuracy(inputWeight, input, expectedOutput);
-    
-    %disp(["loopError", loopError]);
     correctionIncrement = abs(inputWeight' * input) / (input' * input);
-    %disp(correctionIncrement);
     outputWeight = inputWeight + 0.5 * lambda * correctionIncrement * loopError * input;
-    %disp(outputWeight);
 end
 
 function [loopError] = measureAccuracy(weight, input, expectedOutput)
