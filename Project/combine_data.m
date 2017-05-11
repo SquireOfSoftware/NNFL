@@ -40,6 +40,7 @@ disp("Finished combining the data");
 
 function [rawPatternCollection] = addRawPattern(recording, rawPatternCollection, pIndex)
     if pIndex <= 300
+        disp(pIndex);
         rawPatternCollection = [rawPatternCollection, recording];
     else
         disp('Current file has reached 300 raw recordings');

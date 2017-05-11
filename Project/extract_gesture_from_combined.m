@@ -1,7 +1,7 @@
 % this code is to extract the frame from a list of gestures
 
-%processedRecording = extract_gesture_from_captured_data('capturedData/combined_swipe_right_data.mat', 90);
-processedRecording = extract_gesture_from_captured_data('combined_swipe_right_data.mat', 1);
+processedRecording = extract_gesture_from_captured_data('capturedData/combined_swipe_down_data.mat', 100);
+%processedRecording = extract_gesture_from_captured_data('combined_swipe_right_data.mat', 1);
 
 plot_hand_data;
 

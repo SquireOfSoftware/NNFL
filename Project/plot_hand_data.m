@@ -12,7 +12,7 @@ function plotData(handData)
     plotColours = [1 1 0; 0 0 1; 0 1 1; 1 0 0; 0 0 0];
 
     set(gca, 'ColorOrder', plotColours, 'NextPlot', 'replacechildren');
-    axis([-200 200 -200 200 0 600]);
+    axis([-300 300 -300 300 0 600]);
     view(3);
 
     for index = 1:dCols
