@@ -26,7 +26,7 @@ end
 function [loopError] = measureAccuracy(weight, input, expectedOutput)
     % run this through a bipolar function
     actualOutput = (2 / (1 + exp(-(weight' * input)))) - 1;
-    %disp(["actualOutput", actualOutput]);
+    %disp(["actualOutput", actualOutput, "expectedOutput", expectedOutput]);
     loopError = expectedOutput - actualOutput;
 end
 
