@@ -4,11 +4,14 @@ clear;
 
 addpath ('/Users/JarvisWalker/Documents/Git/NNFL/Project/reusableCode');
 
-generate_swipe_right_data;
+generate_swipe_left_data;
 
 load_current_weight_data;
 
-[currentWeight, evolutionOfWeights, evolutionOfErrors] = run_neural_network(processedPatternCollection, expectedOutputs, currentWeight, 100);
+oldWeight = currentWeight;
+
+[currentWeight, evolutionOfWeights, uusevolutionOfErrors] = run_neural_network(processedPatternCollection, expectedOutputs, currentWeight, pMax);
 
 disp("Finished running through all the swipe right data");
+
 save('current_weight.mat', 'currentWeight');

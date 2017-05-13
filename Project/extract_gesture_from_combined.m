@@ -1,7 +1,9 @@
 % this code is to extract the frame from a list of gestures
 
-processedRecording = extract_gesture_from_captured_data('capturedData/combined_swipe_right_data.mat', 10);
-%processedRecording = extract_gesture_from_captured_data('combined_swipe_right_data.mat', 1);
+addpath ('/Users/JarvisWalker/Documents/Git/NNFL/Project/reusableCode');
+
+%processedRecording = extract_gesture_from_captured_data('capturedData/combined_swipe_right_data.mat', 10);
+processedRecording = extract_gesture_from_captured_data('combined_data.mat', 93);
 
 plot_hand_data;
 

@@ -9,11 +9,12 @@ load('capturedData/[jack]combined_swipe_right_data.mat', 'processedPatternCollec
 bias = ones(noOfInputs, 1);
 processedPatternCollection = [processedPatternCollection; bias'];
 
-classification = assessOutput(currentWeight, processedPatternCollection(:, round(50*rand())));
-
-disp(classification);
+for index = 1:50
+    classification = assessOutput(currentWeight, processedPatternCollection(:, index));
+    disp(classification);
+end
 
 function actualOutput = assessOutput(weight, input)
-    disp(input);
+    %disp(input);
     actualOutput = (2 / (1 + exp(-(weight' * input)))) - 1;
 end

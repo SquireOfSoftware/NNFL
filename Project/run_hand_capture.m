@@ -1,5 +1,7 @@
 % code to run both the capture and plotting process
 
+addpath ('/Users/JarvisWalker/Documents/Git/NNFL/Project/reusableCode');
+
 while(1)
     capture_raw_data;
 

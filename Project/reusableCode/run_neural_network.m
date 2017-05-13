@@ -18,12 +18,16 @@ function [resultingWeight, weightEvolution, recordedErrors] = run_neural_network
 end
 
 function [outputWeight, loopError] = runOneLoop(inputWeight, lambda, input, expectedOutput)
-    loopError = measureAccuracy(inputWeight, input, expectedOutput);
+    [loopError, actualOutput] = measureAccuracy(inputWeight, input, expectedOutput);
+    
     correctionIncrement = abs(inputWeight' * input) / (input' * input);
+    
+    %correctionIncrement = 0.5 * (1 - actualOutput^2);
+    
     outputWeight = inputWeight + 0.5 * lambda * correctionIncrement * loopError * input;
 end
 
-function [loopError] = measureAccuracy(weight, input, expectedOutput)
+function [loopError, actualOutput] = measureAccuracy(weight, input, expectedOutput)
     % run this through a bipolar function
     actualOutput = (2 / (1 + exp(-(weight' * input)))) - 1;
     %disp(["actualOutput", actualOutput, "expectedOutput", expectedOutput]);
