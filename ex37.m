@@ -33,7 +33,7 @@ wBar = [-6.9938, 6.6736, 1.555; -4.2812, 3.9127, 3.6233];
 n = 0.1;
 
 inputIndex = 1;
-for index = 1:2
+for index = 1:4
     % inputs multiplied weight bars
     activationVector1 =  wBar * y(:, inputIndex);
 
@@ -52,20 +52,24 @@ for index = 1:2
     % AKA delta
     layer2Delta = (d(:, inputIndex) - layer2) * bipolarDifferentialFunction(activationVector2);
 
-    w = w + n * layer2Delta * activationVector2';% d(:, inputIndex);
+    %w = w + n * layer2Delta * activationVector2';% d(:, inputIndex);
+    w = w + n * layer2Delta * d(:, inputIndex);
 
     % AKA deltaBar
     layer1Delta = arrayfun(@bipolarDifferentialFunction, activationVector1) *...
-        sum(layer2Delta * wBar);
+        sum(sum(layer2Delta * wBar));
     
     %disp(layer1Delta);
-    disp(["sum", sum(layer2Delta * wBar)]);
+    %disp("sum");
+    disp(sum(sum(layer2Delta * wBar)));
 
     activationVector1(3, :) = bias; % include a bias?
 
-    wBar = wBar + n * layer1Delta * activationVector1; %y(:, inputIndex)';
-    
+    %wBar = wBar + n * layer1Delta * activationVector1'; %y(:, inputIndex)';
+    wBar = wBar + n * layer1Delta * activationVector2;
+    disp("w");
     disp(w);
+    disp("wBar");
     disp(wBar);
 
     inputIndex = inputIndex + 1;
