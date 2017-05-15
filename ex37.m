@@ -70,10 +70,10 @@ for index = 1:1
     layer1Differentials = arrayfun(@bipolarDifferentialFunction, activationVector1);
     %layer1Delta = arrayfun(@bipolarDifferentialFunction, activationVector1) * (layer2Delta * w);
     layer1Delta = zeros(2, 1);
-    for index = 1:2
+    for counter = 1:2
         % using previous layer's weights and discarding the last weight
         % for the bias
-        layer1Delta(index, :) = layer2Delta * w(:, index) * layer1Differentials(index, :);
+        layer1Delta(counter, :) = layer2Delta * w(:, counter) * layer1Differentials(counter, :);
     end
     
     disp("layer1Delta");
@@ -83,10 +83,10 @@ for index = 1:1
 
     %activationVector1(3, :) = bias; % include a bias?
     
-    w = w + n * layer2Delta * d(:, inputIndex);
+    w = w + n * layer2Delta * layer1';
 
     %wBar = wBar + n * layer1Delta * activationVector1'; %y(:, inputIndex)';
-    wBar = wBar + n * layer1Delta * activationVector2;
+    wBar = wBar + n * layer1Delta * layer2';
     
     disp("w");
     disp(w);
