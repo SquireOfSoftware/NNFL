@@ -44,8 +44,18 @@ for index = 1:cycles
     layer1Differential = arrayfun(@bipolarDifferentialFunction, activationVector1);
     %layer1Differential = arrayfun(@bipolarDifferentialFunction, activationVector2);
     
-    layer1Sum = sumVector(layer2Delta, wBar);
-    layer1Delta = layer1Differential .* layer1Sum;
+    %layer1Sum = sumVector(layer2Delta, w);
+    %layer1Delta = layer1Differential .* layer1Sum;
+    [wRows, wCols] = size(w);
+    
+    layer1Delta = zeros(wRows, 1);
+    for counter = 1:wCols - 1 % do not include the bias
+        disp(layer2Delta);
+        disp(w(:, counter));
+        disp(layer1Differential(counter, :));
+        temp = layer2Delta .* w(:, counter) .* layer1Differential;
+        layer1Delta(:, 1) = layer1Delta(:, 1) + temp;
+    end
     
     inputCounter = inputCounter + 1;
     if inputCounter > 3
