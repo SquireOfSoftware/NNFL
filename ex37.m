@@ -86,7 +86,7 @@ for index = 1:1
     w = w + n * layer2Delta * layer1';
 
     %wBar = wBar + n * layer1Delta * activationVector1'; %y(:, inputIndex)';
-    wBar = wBar + n * layer1Delta * layer2';
+    wBar = wBar + n * layer1Delta * y(:, inputIndex)';
     
     disp("w");
     disp(w);
