@@ -38,15 +38,17 @@ delta=e*0.5*(1-z^2)
 
 disp("deltab calc");
 disp(w);
-for j=1:J0 %IO + 1, which is 3
+for j=1:J0 %which is 2
+    disp(["weight entry", w(:,j)]);
+    disp(["delta value", delta(:,1)]);
     disp(delta(:,1)'*w(:,j));
     disp(["differential", 0.5*(1-y(j,1)^2)]);
     deltab(j,1)=delta(:,1)'*w(:,j)*0.5*(1-y(j,1)^2);
 end
 deltab
 
-w=w+eta*delta*y';
-wb=wb+eta*deltab*x';
+%w=w+eta*delta*y';
+%wb=wb+eta*deltab*x';
 
 disp('Updated: w2 and wb2')
 w

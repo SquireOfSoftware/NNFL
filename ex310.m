@@ -41,21 +41,27 @@ for index = 1:cycles
     % make sure you multiply each element by their respective differential
     % values
     
-    layer1Differential = arrayfun(@bipolarDifferentialFunction, activationVector1);
-    %layer1Differential = arrayfun(@bipolarDifferentialFunction, activationVector2);
+    layer1Differentials = arrayfun(@bipolarDifferentialFunction, layer1);
     
-    %layer1Sum = sumVector(layer2Delta, w);
-    %layer1Delta = layer1Differential .* layer1Sum;
     [wRows, wCols] = size(w);
     
     layer1Delta = zeros(wRows, 1);
-    for counter = 1:wCols - 1 % do not include the bias
-        disp(layer2Delta);
-        disp(w(:, counter));
-        disp(layer1Differential(counter, :));
-        temp = layer2Delta .* w(:, counter) .* layer1Differential;
-        layer1Delta(:, 1) = layer1Delta(:, 1) + temp;
+    for rowCounter = 1:wCols % do not include the bias weight
+        
+        temp = layer1Differentials(1:3, :) .* w(:, rowCounter);
+        layer1Delta(:, 1) = layer1Delta(:, 1) + layer2Delta .* temp;
+        
+        for cellCounter = 1:wRows
+            
+        end
+        
     end
+    %disp("layer1Delta");
+    %disp(layer1Delta);
+    %layer1Delta = layer1Differentials .* layer1Delta;
+    
+    % update the weights
+    % to be continued
     
     inputCounter = inputCounter + 1;
     if inputCounter > 3
@@ -69,27 +75,4 @@ end
 
 function output = bipolarDifferentialFunction(v)
     output = 0.5 * (1 - (bipolarLogisticFunction(v))^2);
-end
-
-function output = sumVector(delta, weights)
-    [wRows, wCols] = size(weights);
-    disp([wRows, wCols]);
-    output = zeros(wRows, 1);
-    
-    %for index = 1:wCols
-    %    output = output + delta .* weights(:, index);
-    %    %disp(output);
-    %end
-    
-    for index = 1:wRows
-        %summedRow = sum(weights(index, :));
-        %disp(summedRow);
-        %output(index, :) = delta(index, :) * summedRow;
-        
-        for colIndex = 1:wCols
-            disp([delta(index, :), weights(index, colIndex),delta(index, :) * weights(index, colIndex)]);
-            output(index, :) = output(index, :) + delta(index, :) * weights(index, colIndex);
-        end
-    end
-    disp(output);
 end
