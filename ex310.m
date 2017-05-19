@@ -48,17 +48,7 @@ for index = 1:cycles
     layer1Delta = zeros(wRows, 1);
     for rowCounter = 1:3 % do not include the bias weight
         
-        %temp = layer1Differentials(1:3, :) .* w(:, rowCounter);
-        %layer1Delta(:, 1) = layer2Delta' * w(:, rowCounter);
         layer1Delta(rowCounter,1) = layer2Delta(:,1)'*w(:,rowCounter);%*0.5*(1-layer1(rowCounter,1)^2);
-        disp(layer2Delta(:,1)'*w(:,rowCounter)); %check that this is correct
-        %disp(layer2Delta'); % this is correct
-        %disp(w(:,rowCounter));
-        
-        %disp(0.5*(1-layer1(rowCounter,1)^2)); % differentials is correct
-        %now
-        
-        %disp(layer1Delta(rowCounter,1));
         
         for cellCounter = 1:wRows
             
@@ -70,7 +60,9 @@ for index = 1:cycles
     layer1Delta = layer1Differentials .* layer1Delta;
     
     % update the weights
-    % to be continued
+    w = w + n * layer2Delta * layer1';
+    wBar = wBar + n * layer1Delta * X(:,inputCounter)'; % this is correct
+    
     
     inputCounter = inputCounter + 1;
     if inputCounter > 3
