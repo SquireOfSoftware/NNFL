@@ -14,7 +14,7 @@ w = [0.9081, 0.9485, -0.1513, -0.5108; -0.2862, -0.482, 0.6261, 0.5212; 0.6762, 
 wBar = [-0.0963000000000000,-0.766900000000000,0.0939000000000000,0.198700000000000,0.374800000000000,-0.752700000000000,-0.839300000000000,0.868100000000000,0.538200000000000,0.343800000000000;-0.472800000000000,-0.580900000000000,-0.987800000000000,-0.136200000000000,-0.249400000000000,0.946700000000000,-0.0115000000000000,-0.499700000000000,-0.000100000000000000,0.363300000000000;0.331000000000000,-0.772600000000000,-0.648100000000000,-0.835000000000000,0.672400000000000,-0.940700000000000,0.538900000000000,-0.280700000000000,0.498500000000000,0.513500000000000];
 
 bias = -1;
-cycles = 1;
+cycles = 60;
 inputCounter = 1;
 
 n = 0.8;
@@ -48,15 +48,13 @@ for index = 1:cycles
     layer1Delta = zeros(wRows, 1);
     for rowCounter = 1:3 % do not include the bias weight
         
-        layer1Delta(rowCounter,1) = layer2Delta(:,1)'*w(:,rowCounter);%*0.5*(1-layer1(rowCounter,1)^2);
+        layer1Delta(rowCounter,1) = layer2Delta(:,1)'*w(:,rowCounter);
         
         for cellCounter = 1:wRows
             
         end
         
     end
-    %disp("layer1Delta");
-    %disp(layer1Delta);
     layer1Delta = layer1Differentials .* layer1Delta;
     
     % update the weights
@@ -76,5 +74,4 @@ end
 
 function output = bipolarDifferentialFunction(v)
     output = 0.5 * (1 - (bipolarLogisticFunction(v))^2);
-    %disp(output);
 end
