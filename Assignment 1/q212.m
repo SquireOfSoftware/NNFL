@@ -5,9 +5,9 @@ M1 = [0, 0.5, 0.8, 1, 0.6, 0.2, 0];
 R = [0,0,0,0,0,0,0;0,0.250000000000000,0.250000000000000,0.250000000000000,0.250000000000000,0.250000000000000,0;0,0.300000000000000,0.600000000000000,0.750000000000000,0.600000000000000,0.300000000000000,0;0,0.300000000000000,0.600000000000000,1,0.600000000000000,0.300000000000000,0;0,0.300000000000000,0.600000000000000,0.750000000000000,0.600000000000000,0.300000000000000,0;0,0.250000000000000,0.250000000000000,0.250000000000000,0.250000000000000,0.250000000000000,0;0,0,0,0,0,0,0];
 
 % 2.1.2 Find A1a = M1 o R using max-min - apply max first then min overall
-A1a = maxMinComposition(M1', R);
+A1a = maxMinComposition(M1, R);
 % 2.1.3 Find A1b = M1 o R using sum-product - sum each row, then multiply
-A1b = sumProductComposition(M1', R);
+A1b = sumProductComposition(M1, R);
 
 disp(A1a);
 disp(A1b);
@@ -21,5 +21,5 @@ function output = sumProductComposition(a, b)
     % since a is just a 7 by 1 matrix
     % the sum has already been calculated
     % in a sense since each column is just a single value
-    output = a * sum(b);
+    output = a*b;
 end

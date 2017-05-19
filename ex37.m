@@ -14,8 +14,8 @@ clear;
 
 x1 = [0; 0];
 x2 = [0; 1];
-x3 = [1; 0];
-x4 = [1; 1];
+x3 = [1; 1];
+x4 = [1; 0];
 
 d = [-1, 1, -1, 1];
 
@@ -33,7 +33,7 @@ wBar = [-6.9938, 6.6736, 1.555; -4.2812, 3.9127, 3.6233];
 n = 0.1;
 
 inputIndex = 1;
-for index = 1:1
+for index = 1:250
     % inputs multiplied weight bars
     activationVector1 =  wBar * y(:, inputIndex);
 

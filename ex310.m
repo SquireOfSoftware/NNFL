@@ -41,15 +41,24 @@ for index = 1:cycles
     % make sure you multiply each element by their respective differential
     % values
     
-    layer1Differentials = arrayfun(@bipolarDifferentialFunction, layer1);
+    layer1Differentials = arrayfun(@bipolarDifferentialFunction, activationVector1);
     
     [wRows, wCols] = size(w);
     
     layer1Delta = zeros(wRows, 1);
-    for rowCounter = 1:wCols % do not include the bias weight
+    for rowCounter = 1:3 % do not include the bias weight
         
-        temp = layer1Differentials(1:3, :) .* w(:, rowCounter);
-        layer1Delta(:, 1) = layer1Delta(:, 1) + layer2Delta .* temp;
+        %temp = layer1Differentials(1:3, :) .* w(:, rowCounter);
+        %layer1Delta(:, 1) = layer2Delta' * w(:, rowCounter);
+        layer1Delta(rowCounter,1) = layer2Delta(:,1)'*w(:,rowCounter);%*0.5*(1-layer1(rowCounter,1)^2);
+        disp(layer2Delta(:,1)'*w(:,rowCounter)); %check that this is correct
+        %disp(layer2Delta'); % this is correct
+        %disp(w(:,rowCounter));
+        
+        %disp(0.5*(1-layer1(rowCounter,1)^2)); % differentials is correct
+        %now
+        
+        %disp(layer1Delta(rowCounter,1));
         
         for cellCounter = 1:wRows
             
@@ -58,7 +67,7 @@ for index = 1:cycles
     end
     %disp("layer1Delta");
     %disp(layer1Delta);
-    %layer1Delta = layer1Differentials .* layer1Delta;
+    layer1Delta = layer1Differentials .* layer1Delta;
     
     % update the weights
     % to be continued
@@ -70,9 +79,10 @@ for index = 1:cycles
 end
 
 function output = bipolarLogisticFunction(v)
-    output = 2 / (1 + exp(-v)) - 1;
+    output = (2 / (1 + exp(-v))) - 1;
 end
 
 function output = bipolarDifferentialFunction(v)
     output = 0.5 * (1 - (bipolarLogisticFunction(v))^2);
+    %disp(output);
 end
