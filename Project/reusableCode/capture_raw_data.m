@@ -4,8 +4,8 @@
 clc;
 clear;
 
-addpath ('/Users/JarvisWalker/Documents/Git/matleap');
-addpath ('/Users/JarvisWalker/Documents/Git/nestedSortStruct');
+addpath ('../../matleap');
+addpath ('nestedSortStruct');
 
 % currently set to 200 milliseconds
 [rawRecording, processedRecording] = grab_raw_data(0.2, 20);

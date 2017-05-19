@@ -46,7 +46,7 @@ for index = 1:cycles
     [wRows, wCols] = size(w);
     
     layer1Delta = zeros(wRows, 1);
-    for rowCounter = 1:3 % do not include the bias weight
+    for rowCounter = 1:wCols - 1 % do not include the bias weight
         
         layer1Delta(rowCounter,1) = layer2Delta(:,1)'*w(:,rowCounter);
         

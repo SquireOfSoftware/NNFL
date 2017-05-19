@@ -2,7 +2,7 @@
 clc;
 clear;
 
-addpath ('/Users/JarvisWalker/Documents/Git/NNFL/Project/reusableCode');
+addpath ('reusableCode');
 
 generate_swipe_right_data;
 
