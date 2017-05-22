@@ -6,4 +6,6 @@ else
     %weight1 = zeros(noOfInputs + 1, 1);
     currentWeight = processedPatternCollection(1, :)';
     currentWeight = [currentWeight; 1];
+    
+    % define w and wBar
 end
