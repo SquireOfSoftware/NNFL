@@ -36,7 +36,7 @@ for index = 1:steps
     activationVector2 = w * layer1;
     
     layer2 = arrayfun(@bipolarLogisticFunction, activationVector2);
-    
+    disp(layer2);
     % feedfoward has finished, start back propagation
     patternError = (D(:, inputCounter) - layer2);
     layer2Differentials = arrayfun(@bipolarDifferentialFunction, activationVector2);
@@ -56,8 +56,8 @@ for index = 1:steps
     layer1Delta = layer1Differentials .* layer1Delta;
     
     % update the weights
-    w = w + n * layer2Delta * layer1';
-    wBar = wBar + n * layer1Delta * X(:,inputCounter)'; % this is correct
+    %w = w + n * layer2Delta * layer1';
+    %wBar = wBar + n * layer1Delta * X(:,inputCounter)'; % this is correct
     
     inputCounter = inputCounter + 1;
     

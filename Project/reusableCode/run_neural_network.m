@@ -2,7 +2,7 @@ function [resultingWeight, weightEvolution, recordedErrors] = run_neural_network
     lambda = 0.25;
     weightEvolution = zeros(301, loops);
     recordedErrors = zeros(1, loops);
-
+    
     for index = 1:loops
         weightEvolution(:, index) = weight;
         [weight, growthError] = runOneLoop(weight, lambda, inputs(:,index), expectedOutputs(:,index));
