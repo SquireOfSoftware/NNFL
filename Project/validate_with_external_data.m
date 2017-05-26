@@ -1,6 +1,6 @@
 
-function [cycleError] = validate_swipe_right_data(w, wBar, loops)
-    load('capturedData/[jack-50]combined_swipe_right_data.mat', 'processedPatternCollection', 'rawPatternCollection');
+function [cycleError] = validate_with_external_data(w, wBar, file, loops)
+    load(file, 'processedPatternCollection', 'rawPatternCollection');
 
     [noOfInputs, ~] = size(processedPatternCollection);
     bias = ones(noOfInputs, 1);
