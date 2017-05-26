@@ -52,7 +52,7 @@ D = expectedOutput;
         activationVector2 = w * layer1;
 
         layer2 = arrayfun(@bipolarLogisticFunction, activationVector2);
-        classifications(:, inputCounter) = layer2;
+        classifications(:, index) = layer2;
 
         % feedfoward has finished, start back propagation
         patternError = D - layer2;

@@ -1,7 +1,7 @@
 clc;
 clear;
 
-load('current_weight.mat', 'currentWeight');
+load('current_weight.mat', 'w', 'wBar');
 
 load('capturedData/[jack]combined_swipe_right_data.mat', 'processedPatternCollection', 'rawPatternCollection');
 
