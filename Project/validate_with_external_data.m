@@ -25,7 +25,8 @@ function [loopError] = measureAccuracy(w, wBar, input, expectedOutput)
     bias = -1;
     %disp([size(wBar), size(input)]);
     actualOutput = (2 / (1 + exp(-(wBar * input)))) - 1;
-    actualOutput(:, 4) = bias;
+    %disp(actualOutput);
+    actualOutput(:, 5) = bias;
     %disp([size(w), size(actualOutput)]);
     %disp(w * actualOutput');
     finalOutput = (2 / (1 + exp(-(w * actualOutput')))) - 1;

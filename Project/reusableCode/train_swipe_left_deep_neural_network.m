@@ -1,7 +1,7 @@
 % assume data is loaded before, this code takes about 2 minutes to run
 clc;
 clear;
-generate_swipe_right_data;
+generate_swipe_left_data;
 
 % inputs 
 
@@ -14,8 +14,8 @@ load_current_weight_data;
 bias = -1;
 steps = 300;
 
-w(:, 4) = bias;
-wBar(:, 301) = bias;
+%w(:, 5) = bias;
+%wBar(:, 301) = bias;
 
 % learning constant
 n = 0.8;
@@ -63,15 +63,17 @@ for index = 1:steps
     % update the weights
     uw = w + n * layer2Delta * layer1';
     uwBar = wBar + n * layer1Delta * X(:,inputCounter)'; % this is correct
-
-    [stepError] = validate_swipe_right_data(w, wBar, 'capturedData/[jack-50]combined_swipe_right_data.mat', 50);
+%{
+    [stepError] = validate_with_external_data(uw, uwBar, 'capturedData/[jack-50]combined_swipe_left_data.mat', 50);
+    
+    %disp(["stepError", "lastStepError"; stepError, lastStepError]);
 
     if (stepError > lastStepError)
         break; % break the loop
     end
-
+    
     lastStepError = stepError;
-
+%}
     w = uw;
     wBar = uwBar;
 

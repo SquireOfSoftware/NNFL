@@ -18,10 +18,11 @@ function output = use_deep_neural_network(X)
 
         disp("Classification is: ");
         disp(layer2);
+        output = layer2;
 
     else
         disp("Please build the neural network first");
-
+        output = 0;
     end
 
     function output = bipolarLogisticFunction(v)

@@ -1,7 +1,7 @@
 % assume data is loaded before, this code takes about 2 minutes to run
 clc;
 clear;
-generate_swipe_left_data;
+generate_swipe_down_data;
 
 % inputs 
 
@@ -12,10 +12,11 @@ generate_swipe_left_data;
 load_current_weight_data;
 
 bias = -1;
-steps = 300;
+%steps = 300;
+steps = 120000;
 
-w(:, 4) = bias;
-wBar(:, 301) = bias;
+%w(:, 5) = bias;
+%wBar(:, 301) = bias;
 
 % learning constant
 n = 0.8;
@@ -29,6 +30,7 @@ classifications = zeros(4, steps);
 inputCounter = 1;
 
 lastStepError = zeros(4, 1);
+patternErrors = zeros(4, steps);
 
 for index = 1:steps
     % start feedforward
@@ -46,6 +48,7 @@ for index = 1:steps
 
     % feedfoward has finished, start back propagation
     patternError = D - layer2;
+    patternErrors(:, index) = patternError;
     layer2Delta = patternError .* arrayfun(@bipolarDifferentialFunction, activationVector2);
     % make sure you multiply each element by their respective differential
     % values
@@ -64,15 +67,15 @@ for index = 1:steps
     uw = w + n * layer2Delta * layer1';
     uwBar = wBar + n * layer1Delta * X(:,inputCounter)'; % this is correct
 
-    [stepError] = validate_with_external_data(w, wBar, 'capturedData/[jack-50]combined_swipe_left_data.mat', 50);
+    %[stepError] = validate_with_external_data(uw, uwBar, 'capturedData/[jack-50]combined_swipe_down_data.mat', 50);
     
-    disp(["stepError", "lastStepError"; stepError, lastStepError]);
+    %disp(["stepError", "lastStepError"; stepError, lastStepError]);
 
-    if (stepError > lastStepError)
-        break; % break the loop
-    end
+    %if (stepError > lastStepError)
+    %    break; % break the loop
+    %end
 
-    lastStepError = stepError;
+    %lastStepError = stepError;
 
     w = uw;
     wBar = uwBar;
