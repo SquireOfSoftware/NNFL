@@ -1,7 +1,11 @@
 % training the deep neural network
 
+cla;
 clc;
 clear;
+
+hold on;
+grid on;
 
 load('split_data.mat', 'overallTrainingData', 'overallValidationData', 'overallTestingData', 'expectedOutputs');
 
@@ -17,7 +21,7 @@ steps = 800;
 inputCounter = 1;
 outputCounter = 1;
 
-n = 0.8;
+n = 0.1;
 
 [iRows, iCols] = size(overallTrainingData);
 overallTrainingData(iRows + 1, :) = bias;
@@ -26,10 +30,13 @@ iRows = iRows + 1;
 [~, dCols] = size(expectedOutputs);
 [~, wCols] = size(w);
 
-runTraining(w, wBar, bias, steps, inputCounter, outputCounter, n, overallTrainingData, expectedOutputs, dCols, wCols, iCols)
+runTraining(w, wBar, bias, steps, inputCounter, outputCounter, n, overallTrainingData, overallValidationData, expectedOutputs, dCols, wCols, iCols)
 
-function runTraining(w, wBar, bias, steps, inputCounter, outputCounter, n, overallTrainingData, expectedOutputs, dCols, wCols, iCols)
+function runTraining(w, wBar, bias, steps, inputCounter, outputCounter, n, overallTrainingData, overallValidationData, expectedOutputs, dCols, wCols, iCols)
     patternErrors = zeros(4, steps);
+    cycleErrors = zeros(4, steps);
+    cycleCount = 1;
+    validationErrors = zeros(1, steps/iCols);
     for index = 1:steps
         % start feedforward
         disp(index);
@@ -49,6 +56,7 @@ function runTraining(w, wBar, bias, steps, inputCounter, outputCounter, n, overa
         % feedfoward has finished, start back propagation
         patternError = expectedOutputs(:, outputCounter) - layer2;
         patternErrors(:, index) = patternError;
+        cycleErrors(:, cycleCount) = cycleErrors(:, cycleCount) + patternError.^2;
         layer2Delta = patternError .* arrayfun(@bipolarDifferentialFunction, activationVector2);
         % make sure you multiply each element by their respective differential
         % values
@@ -72,8 +80,14 @@ function runTraining(w, wBar, bias, steps, inputCounter, outputCounter, n, overa
 
         inputCounter = inputCounter + 1;
 
+        % it has reached the end of a cycle
         if inputCounter > iCols
             inputCounter = 1;
+            % run validation code here
+            % compare w, wBar with validation data
+            validationErrors(:, cycleCount) = runValidationData(w, wBar, overallValidationData, expectedOutputs);
+            
+            cycleCount = cycleCount + 1;
         end
 
         if mod(inputCounter, 100)
@@ -84,7 +98,51 @@ function runTraining(w, wBar, bias, steps, inputCounter, outputCounter, n, overa
         end
     end
 
-    generateCycleError(patternErrors, steps, iCols);
+    fullCycleErrors = generateCycleError(patternErrors, steps, iCols);
+    plot(validationErrors, 'r');
+    plot(fullCycleErrors, 'b');
+    legend("validationErrors", "cycleErrors");
+    disp(validationErrors);
+    
+    function output = runValidationData(w, wBar, overallValidationData, expectedOutputs)
+        [vRows, vCols] = size(overallValidationData);
+        [~, oCols] = size(expectedOutputs);
+        
+        overallValidationData(vRows + 1, :) = bias;
+        
+        outputValidationCounter = 1;
+        validationCycleCount = 1;
+        
+        validationPatternErrors = zeros(4, vCols);
+        validationCycleErrors = zeros(4, 1);
+        
+        for loop = 1:vCols
+            activationValidationVector1 = wBar * overallValidationData(:, loop);
+            validationLayer1 = arrayfun(@bipolarLogisticFunction, activationValidationVector1);
+            [vv1Row, ~] = size(activationValidationVector1);
+
+            validationLayer1(vv1Row + 1, :) = bias;
+            activationValidationVector2 = w * validationLayer1;
+            validationLayer2 = arrayfun(@bipolarLogisticFunction, activationValidationVector2);
+            
+            validationPatternError = expectedOutputs(:, outputValidationCounter) - validationLayer2;
+            
+            validationPatternErrors(:, loop) = validationPatternError;
+            validationCycleErrors(:, validationCycleCount) = validationCycleErrors(:, validationCycleCount) + (validationPatternError).^2;
+            if mod(loop, 100)
+                outputValidationCounter = outputValidationCounter + 1;
+                if outputValidationCounter > oCols
+                    outputValidationCounter = 1;
+                end
+            end
+        end
+        validationCycleErrors(:, validationCycleCount) = 0.5 * validationCycleErrors(:, validationCycleCount);
+        %disp(validationCycleErrors);
+        %plot(sum(validationCycleErrors), '*');
+        output = sum(validationCycleErrors);
+        %hold on;
+        %disp(validationPatternErrors);
+    end
 
     function cycleErrors = generateCycleError(patternErrors, steps, inputCount)
         %disp(inputCount / steps);
@@ -94,23 +152,29 @@ function runTraining(w, wBar, bias, steps, inputCounter, outputCounter, n, overa
         for loops = 1:(steps / inputCount)
             %1 - 6, 7 - 12, 13 - 18
             % 1 + 6*(i - 1)
-            disp([loops, steps / inputCount - 1]);
+            %disp([loops, steps / inputCount - 1]);
             stepStarter = 1 + patternCount / (steps / inputCount)*(loops - 1);
             stepEnder = patternCount / (steps / inputCount)*(loops);
-            disp([loops, stepStarter, stepEnder]);
+            %disp([loops, stepStarter, stepEnder]);
             rawCycle = patternErrors(:, stepStarter: stepEnder);
             cycleError = 0.5 * sumPatternErrors(rawCycle, patternCount / (steps / inputCount));
             cycleErrors(:, loops) = sum(cycleError);
         end
-
-        plot(cycleErrors, '*');
+        %cla;
+        %grid on;
+        %grid minor;
+        
+        %disp(cycleErrors);
+        %plot(cycleErrors);
 
         function output = sumPatternErrors(patternErrors, patternCount)
             output = zeros(4, 1);
-            disp([patternCount, size(patternErrors(:, 1))]);
+            %disp([patternCount, size(patternErrors(:, 1))]);
             for patternCounter = 1:patternCount
+                %disp(patternErrors(:, patternCounter));
                 output = output + patternErrors(:, patternCounter).^2;
             end
+            %disp(["output"; output]);
         end
     end
 
@@ -121,5 +185,4 @@ function runTraining(w, wBar, bias, steps, inputCounter, outputCounter, n, overa
     function output = bipolarDifferentialFunction(v)
         output = 0.5 * (1 - (bipolarLogisticFunction(v))^2);
     end
-
 end
