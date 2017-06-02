@@ -37,10 +37,16 @@ function [trainingData, validationData, testingData] = loadFile(file)
 end
 
 function expectedOutputs = generateExpectedOutputs()
+    %{
     expectedLeft = [1, -1, -1, -1]';
     expectedRight = [-1, 1, -1, -1]';
     expectedUp = [-1, -1, 1, -1]';
     expectedDown = [-1, -1, -1, 1]';
+    %}
+    expectedLeft = [1, 1]';
+    expectedRight = [1, -1]';
+    expectedUp = [-1, 1]';
+    expectedDown = [-1, -1]';
     
     expectedOutputs = [expectedLeft, expectedRight, expectedUp, expectedDown];
 end
