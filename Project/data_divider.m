@@ -2,23 +2,30 @@
 clc;
 clear;
 
-overallTrainingData = zeros(300, 400);
-overallValidationData = zeros(300, 400);
-overallTestingData = zeros(300, 400);
+totalSize = 100;
 
-files = ["capturedData/combined_swipe_left_data.mat", "capturedData/combined_swipe_right_data.mat", "capturedData/combined_swipe_up_data.mat", "capturedData/combined_swipe_down_data.mat"];
+overallTrainingData = zeros(300, 4*totalSize);
+overallValidationData = zeros(300, 4*totalSize);
+overallTestingData = zeros(300, 4*totalSize);
+
+files = ["capturedData/[joseph-300]combined_swipe_left_data.mat",...
+    "capturedData/[joseph-300]combined_swipe_right_data.mat",...
+    "capturedData/[joseph-300]combined_swipe_up_data.mat",...
+    "capturedData/[joseph-300]combined_swipe_down_data.mat"];
+%];
+[fRows, fCols] = size(files);
 
 expectedOutputs = generateExpectedOutputs();
 
-for index = 1:4
+for index = 1:fCols
     [trainingData, validationData, testingData] = loadFile(files(:, index));
 
     % 1, 1 - 100
     % 2, 101 - 200
     % 3, 201 - 300
     % 4, 301 - 400
-    startingIndex = 1 + (index - 1) * 100;
-    endingIndex = index * 100;
+    startingIndex = 1 + (index - 1) * totalSize;
+    endingIndex = index * totalSize;
     
     overallTrainingData(:, startingIndex:endingIndex) = trainingData;
     overallValidationData(:, startingIndex:endingIndex) = validationData;
@@ -26,7 +33,11 @@ for index = 1:4
     
 end
 
-save('split_data.mat', 'overallTrainingData', 'overallValidationData', 'overallTestingData', 'expectedOutputs');
+gestureCount = fCols;
+
+save('split_data.mat', 'overallTrainingData', 'overallValidationData', 'overallTestingData', 'expectedOutputs', 'gestureCount', 'totalSize');
+
+data_mixer;
 
 function [trainingData, validationData, testingData] = loadFile(file)
     load(file);
@@ -42,12 +53,14 @@ function expectedOutputs = generateExpectedOutputs()
     expectedRight = [-1, 1, -1, -1]';
     expectedUp = [-1, -1, 1, -1]';
     expectedDown = [-1, -1, -1, 1]';
+    
     %{
     expectedLeft = [1, 1]';
-    expectedRight = [1, -1]';
+    expectedRight = [1, -1]';    
     expectedUp = [-1, 1]';
     expectedDown = [-1, -1]';
 %}
     
-    expectedOutputs = [expectedLeft, expectedRight, expectedUp, expectedDown];
+    %expectedOutputs = [expectedLeft, expectedRight, expectedUp, expectedDown];
+    expectedOutputs = [expectedLeft, expectedRight];
 end
