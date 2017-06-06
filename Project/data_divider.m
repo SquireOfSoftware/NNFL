@@ -1,3 +1,6 @@
+% divide the data up appropriately
+% need to figure out how to normalise the z axis
+% 1. locate z axis positions
 
 clc;
 clear;
@@ -37,7 +40,9 @@ gestureCount = fCols;
 
 save('split_data.mat', 'overallTrainingData', 'overallValidationData', 'overallTestingData', 'expectedOutputs', 'gestureCount', 'totalSize');
 
-%data_mixer;
+data_adder;
+data_mixer;
+data_adjuster;
 
 function [trainingData, validationData, testingData] = loadFile(file)
     load(file);

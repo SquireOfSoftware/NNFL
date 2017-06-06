@@ -4,8 +4,6 @@ clc;
 clear;
 
 load('split_data.mat', 'overallTrainingData', 'overallValidationData', 'overallTestingData', 'expectedOutputs', 'gestureCount', 'totalSize');
-%overallTrainingData = ['hello', 'world', 'this', 'is', 'a', 'test'];
-%overallTestingData = ['dizzy', 'the', 'dog!', 'The', 'enemy encountered', 'mammal'];
 
 % assuming there is 400 entries, with 100 of each gesture
 % also assumes that there is the correct number of inputs
