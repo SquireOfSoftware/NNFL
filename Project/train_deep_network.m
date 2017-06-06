@@ -29,6 +29,7 @@ wBar = [0.380030147139146,0.381416384289686,0.751610331904579,0.829293071878729,
 %steps = 400;
 %steps = 4000;
 steps = 2400;
+%steps = 1200;
 %steps = 10000;
 % should always be multiples of 400
 
@@ -53,18 +54,32 @@ corrections = analyseCorrectness(classifications, expectedOutputs, gestureCount)
 
 function [variations] = analyseCorrectness(classifications, expectedOutputs, gestureCount)
     [cRows, cCols] = size(classifications);
-    variations = zeros(cRows, cCols);
+    %variations = zeros(cRows, cCols);
+    variations = zeros(1, cCols);
     outputCounter = 1;
     
     for index = 1:cCols
         %value = expectedOutputs(:, outputCounter) - classifications(:, index);
-        variations(:, index) = expectedOutputs(:, outputCounter) - classifications(:, index);
+        value = expectedOutputs(:, outputCounter) - classifications(:, index);
         %corrections(:, index) = cleanUp(classifications(:, index));
+        variations(:, index) = abs(round(sum(value)));
+        
         outputCounter = outputCounter + 1;
         if outputCounter > gestureCount
             outputCounter = 1;
         end
+        
     end
+    
+    correct = cCols;
+    
+    for index = 1:cCols
+        if variations(:, index) >= 1
+            correct = correct - 1;
+        end
+    end
+    
+    disp(["you have matched: ", correct, " out of ", cCols, " which is ", correct / cCols * 100, "%"]);
     
     function cleanedUpValue = cleanUp(value)
         [vRows, vCols] = size(value);
