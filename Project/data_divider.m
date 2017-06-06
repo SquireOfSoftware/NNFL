@@ -37,7 +37,7 @@ gestureCount = fCols;
 
 save('split_data.mat', 'overallTrainingData', 'overallValidationData', 'overallTestingData', 'expectedOutputs', 'gestureCount', 'totalSize');
 
-data_mixer;
+%data_mixer;
 
 function [trainingData, validationData, testingData] = loadFile(file)
     load(file);
@@ -61,6 +61,6 @@ function expectedOutputs = generateExpectedOutputs()
     expectedDown = [-1, -1]';
 %}
     
-    %expectedOutputs = [expectedLeft, expectedRight, expectedUp, expectedDown];
-    expectedOutputs = [expectedLeft, expectedRight];
+    expectedOutputs = [expectedLeft, expectedRight, expectedUp, expectedDown];
+    %expectedOutputs = [expectedLeft, expectedRight];
 end
