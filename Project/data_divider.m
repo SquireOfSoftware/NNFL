@@ -11,10 +11,10 @@ overallTrainingData = zeros(300, 4*totalSize);
 overallValidationData = zeros(300, 4*totalSize);
 overallTestingData = zeros(300, 4*totalSize);
 
-files = ["capturedData/[joseph-300]combined_swipe_left_data.mat",...
-    "capturedData/[joseph-300]combined_swipe_right_data.mat",...
-    "capturedData/[joseph-300]combined_swipe_up_data.mat",...
-    "capturedData/[joseph-300]combined_swipe_down_data.mat"];
+files = ["capturedData/[daniel-300]combined_swipe_left_data.mat",...
+    "capturedData/[daniel-300]combined_swipe_right_data.mat",...
+    "capturedData/[daniel-300]combined_swipe_up_data.mat",...
+    "capturedData/[daniel-300]combined_swipe_down_data.mat"];
 
 [fRows, fCols] = size(files);
 
@@ -41,7 +41,7 @@ gestureCount = fCols;
 save('split_data.mat', 'overallTrainingData', 'overallValidationData', 'overallTestingData', 'expectedOutputs', 'gestureCount', 'totalSize');
 
 data_mixer;
-data_adder;
+%data_adder;
 data_adjuster;
 
 function [trainingData, validationData, testingData] = loadFile(file)
