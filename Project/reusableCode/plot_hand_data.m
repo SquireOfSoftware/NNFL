@@ -1,7 +1,7 @@
 % code to plot the processed data
 cla;
 
-%load('raw_data.mat');
+load('raw_data.mat');
 %load('capturedData/hand_down.mat');
 
 plotData(processedRecording);
