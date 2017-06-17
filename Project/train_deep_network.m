@@ -17,7 +17,7 @@ load('[1000-train-1000-valid-600-test-joseph-jack-daniel]split_data.mat', 'overa
 
 bias = -1;
 
-hiddenNeurons = 250; % trial and error from 10 - 100
+hiddenNeurons = 75; % trial and error from 10 - 100
 outputBits = gestureCount;
 
 % for randomising hidden neurons
@@ -52,7 +52,7 @@ w = rand(outputBits, hiddenNeurons + 1);
 
 [~, trainingCols] = size(overallTrainingData);
 
-cycles = 50;
+cycles = 300;
 steps = trainingCols * cycles;
 
 % samples are bunched up into groups of 100
@@ -61,7 +61,7 @@ steps = trainingCols * cycles;
 inputCounter = 1;
 outputCounter = 1;
 
-n = 0.01;
+n = 0.009;
 %n = 0.01;
 
 [~, dCols] = size(expectedOutputs);
@@ -174,8 +174,8 @@ function [finalW, finalWBar, validationErrors, cycleErrors] = runTraining(w, wBa
 
         layer1(v1Row + 1, :) = bias;
         %layer1 = [layer1; bias];
-        disp("layer1");
-        disp(layer1);
+        %disp("layer1");
+        %disp(layer1);
         %disp([size(w),size(layer1)]);
         activationVector2 = w * layer1;
 
@@ -183,13 +183,13 @@ function [finalW, finalWBar, validationErrors, cycleErrors] = runTraining(w, wBa
         %classifications(:, index) = layer2;
         %disp(expectedOutputs(:, outputCounter));
         
-        disp("layer2");
-        disp(layer2);
+        %disp("layer2");
+        %disp(layer2);
         
         %disp(size(layer2));
         
-        disp("expected output");
-        disp(expectedOutputs(:, outputCounter));
+        %disp("expected output");
+        %disp(expectedOutputs(:, outputCounter));
         
         %disp(size(expectedOutputs(:, outputCounter)));
         % feedfoward has finished, start back propagation
@@ -215,8 +215,8 @@ function [finalW, finalWBar, validationErrors, cycleErrors] = runTraining(w, wBa
         uwBar = wBar + n * layer1Delta * overallTrainingData(:,inputCounter)'; % this is correct
 
         %disp(uw - w);
-        oldUW = w;
-        oldUWBar = wBar;
+        %oldUW = w;
+        %oldUWBar = wBar;
 
         w = uw;
         wBar = uwBar;
