@@ -17,7 +17,7 @@ load('[1000-train-1000-valid-600-test-joseph-jack-daniel]split_data.mat', 'overa
 
 bias = -1;
 
-hiddenNeurons = 70; % trial and error from 10 - 100
+hiddenNeurons = 250; % trial and error from 10 - 100
 outputBits = gestureCount;
 
 % for randomising hidden neurons
@@ -52,7 +52,7 @@ w = rand(outputBits, hiddenNeurons + 1);
 
 [~, trainingCols] = size(overallTrainingData);
 
-cycles = 300;
+cycles = 1000;
 steps = trainingCols * cycles;
 
 % samples are bunched up into groups of 100
